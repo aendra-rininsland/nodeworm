@@ -48,9 +48,5 @@ io.sockets.on('connection', function (client) {
       console.dir([client.id,  Date.now(), dial.value]);
     //}
   });
-});
 
-}
-
-
-
+}); //end on('connection')
