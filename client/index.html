@@ -20,7 +20,7 @@
         simpleSheet: false,
         callback: function(sheets) {
           $('h1.title').text(sheets.conf.elements[0].eventtitle);
-          var socket = io.connect('http://localhost');
+          var socket = io.connect('/');
           socket.on('connect', function(){
             $('.dial').knob({
               width: 700,
