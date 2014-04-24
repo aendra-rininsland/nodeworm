@@ -1,8 +1,57 @@
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io.connect('http://localhost');
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
-</script>
+<html>
+  <head>
+    <title>nodeworm client</title>
+  </head>
+  <body>
+    <h1 class="title"></h1>
+    <div style="text-align: center;">
+      <input type="text" value="0" class="dial" />
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/client/bower_components/d3/d3.js"></script>
+    <script src="/client/colorbrewer.js"></script>
+    <script src="/client/bower_components/tabletop/src/tabletop.js"></script>
+    <script src="/client/bower_components/jQuery-Knob/js/jquery.knob.js"></script>
+    <script>
+    (function($){
+      Tabletop.init({
+        key: '0Aqqh1cRUSxC-dHVFZi1LdWUzckcwd21TOUdFUXpaaGc',
+        simpleSheet: false,
+        callback: function(sheets) {
+          $('h1.title').text(sheets.conf.elements[0].eventtitle);
+          var socket = io.connect('http://localhost:5544');
+          socket.on('connect', function(){
+            $('.dial').knob({
+              width: 700,
+              height: 700,
+              cursor: 10,
+              step: 1,
+              thickness: '.7',
+              fgColor: 'grey',
+              angleOffset: -125,
+              angleArc: 250,
+              displayInput: false,
+              change: function(v) {
+                var color = d3.scale.linear()
+                  .domain([0, 50, 100])
+                  .range(colorbrewer.RdYlGn[3]);
+                this.o.bgColor = color(v);
+              },
+              release: function(v) {
+                socket.emit('dial_state_send', { value: v });
+              }
+            });
+
+            // Return dial state every n seconds, as set by $NODEWORM_POLLING_DELAY
+            socket.on('dial_state_request', function(server){
+              socket.emit('dial_state_send', { value: +$('.dial').val() });
+            });
+          });
+        }
+      });
+
+    })(jQuery);
+    </script>
+  </body>
+</html>
