@@ -1,0 +1,28 @@
+{
+  "name": "nodeworm-client",
+  "version": "0.0.1",
+  "description": "A client for the nodeworm debate analysis server.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "client",
+    "data",
+    "debate",
+    "politics"
+  ],
+  "author": "Ændrew Rininsland",
+  "license": "MIT",
+  "dependencies": {
+    "grunt-bower-install": "^1.4.0"
+  },
+  "devDependencies": {
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-usemin": "^2.1.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.4.0"
+  }
+}

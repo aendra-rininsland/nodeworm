@@ -1,0 +1,29 @@
+module.exports = function(grunt) {
+
+  // Project configuration.
+  grunt.initConfig({
+    useminPrepare: {
+      html: 'index.html',
+      options: {
+        flow: {
+          steps: {
+            js: ['uglifyjs']
+          },
+          post: {}
+        }
+      }
+    }
+  });
+
+
+grunt.loadNpmTasks('grunt-contrib-uglify');
+grunt.loadNpmTasks('grunt-bower-install');
+
+grunt.registerTask(
+  'build', [
+    'useminPrepare',
+    'bower-install',
+    'concat',
+    'uglify',
+    'usemin'
+  ]);

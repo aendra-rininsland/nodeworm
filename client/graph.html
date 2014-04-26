@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <title>nodeworm graph output</title>
+    <link rel="stylesheet" href="/client/bower_components/rickshaw/rickshaw.css" />
+    <style>
+    #chart {
+      position: relative;
+      left: 40px;
+    }
+    #y_axis {
+      position: absolute;
+      top: 50px;
+      bottom: 0;
+      width: 40px;
+    }
+    #chart_container {
+      width: 85%;
+      margin: 50px auto;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="chart_container">
+      <div id="y_axis"></div>
+      <div id="chart"></div>
+    </div>
+    <!-- build:js scripts/site.js -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/client/bower_components/d3/d3.js"></script>
+    <script src="/client/bower_components/rickshaw/rickshaw.js"></script>
+    <script type="text/javascript">
+      (function($){
+        var tv = 1000;
+
+        // instantiate our graph!
+        var graph = new Rickshaw.Graph( {
+          element: document.getElementById("chart"),
+          min: 0,
+          max: 100,
+          renderer: 'line',
+          series: new Rickshaw.Series.FixedDuration([{ name: 'worm' }], undefined, {
+            timeInterval: tv,
+            maxDataPoints: 100,
+            timeBase: new Date().getTime() / 1000
+          }) 
+        } );
+
+        var y_ticks = new Rickshaw.Graph.Axis.Y( {
+          graph: graph,
+          orientation: 'left',
+          tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+          element: document.getElementById('y_axis')
+        } );
+
+        graph.render();
+
+        var socket = io.connect('/live');
+        socket.on('connect', function(){
+          console.log('connected!');
+          socket.emit('livechart_begin_collection', new Date());
+          socket.on('send_livechart_data', function(server){
+            graph.series.addData(server);
+            graph.render();
+          });
+        });
+
+
+
+      })(jQuery);
+    </script>
+    <!-- endbuild -->
+  </body>
+</html>
