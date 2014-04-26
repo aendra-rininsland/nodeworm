@@ -48,7 +48,7 @@ var graph = io.of('/live').on('connection', function (socket) {
           socket.emit('send_livechart_data', {worm: avg / res.rows.length});
           ts = moment();
         });
-      },  2000);
+      },  5000);
     });
   });
 }); //end /live

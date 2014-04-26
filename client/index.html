@@ -23,16 +23,17 @@
           cursor: 20,
           step: 1,
           thickness: '.7',
-          fgColor: 'grey',
+          fgColor: 'black',
+          bgColor: '#5ab4ac',
           angleOffset: -125,
           angleArc: 250,
           displayInput: false,
-          change: function(v) {
-            var color = d3.scale.linear()
-              .domain([0, 50, 100])
-              .range(colorbrewer.RdYlGn[3]);
-            this.o.bgColor = color(v);
-          },
+          // change: function(v) {
+          //   var color = d3.scale.linear()
+          //     .domain([0, 50, 100])
+          //     .range(['#ffffff', '#5ab4ac']);
+          //   this.o.bgColor = color(v);
+          // },
           release: function(v) {
             socket.emit('dial_state_send', { value: v, type: 'push' });
           }
